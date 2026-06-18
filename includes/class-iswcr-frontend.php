@@ -26,7 +26,7 @@ final class Frontend {
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_filter( 'woocommerce_account_menu_items', array( $this, 'account_menu_items' ) );
 		add_action( 'woocommerce_account_' . Settings::get( 'endpoint', 'recesso' ) . '_endpoint', array( $this, 'render_account_page' ) );
-		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
+		//add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
 		add_action( 'woocommerce_thankyou', array( $this, 'render_order_button_by_id' ), 20 );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'render_order_button' ) );
 		add_filter( 'the_content', array( $this, 'append_order_received_button' ), 20 );
