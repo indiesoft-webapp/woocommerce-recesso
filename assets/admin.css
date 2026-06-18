@@ -1,0 +1,74 @@
+.iswcr-brand {
+	align-items: center;
+	display: flex;
+	gap: 16px;
+	margin: 20px 0;
+}
+
+.iswcr-brand img {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	height: 64px;
+	object-fit: cover;
+	width: 64px;
+}
+
+.iswcr-brand h1 {
+	margin: 0;
+}
+
+.iswcr-brand p {
+	color: #646970;
+	margin: 4px 0 0;
+}
+
+.iswcr-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+}
+
+.iswcr-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 16px;
+}
+
+.iswcr-check {
+	display: block;
+	margin-bottom: 8px;
+}
+
+.iswcr-status {
+	border-radius: 999px;
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 3px 8px;
+}
+
+.iswcr-status-new,
+.iswcr-status-in_review {
+	background: #fff4cc;
+	color: #674e00;
+}
+
+.iswcr-status-approved,
+.iswcr-status-completed {
+	background: #dff5e7;
+	color: #0a4b24;
+}
+
+.iswcr-status-rejected,
+.iswcr-status-cancelled {
+	background: #ffe2e2;
+	color: #8a2424;
+}
+
+@media (max-width: 782px) {
+	.iswcr-grid {
+		grid-template-columns: 1fr;
+	}
+}
