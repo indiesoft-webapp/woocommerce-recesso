@@ -25,6 +25,9 @@ final class Emails {
 	public function notify_created( $request, $order ) {
 		$subject = sprintf( __( 'Richiesta di recesso #%1$d per ordine #%2$s', 'indiesoft-woocommerce-recesso' ), $request['id'], $order->get_order_number() );
 		$message = $this->render_message( $request, $order );
+		$heading = __( 'Nuova richiesta di recesso', 'indiesoft-woocommerce-recesso' );
+		$mailer = WC()->mailer();
+		$message = $mailer->wrap_message( $heading, $message );
 		$admin_email = sanitize_email( Settings::get( 'admin_email', get_option( 'admin_email' ) ) );
 		$customer_email = is_email( $request['customer_email'] ?? '' ) ? $request['customer_email'] : $order->get_billing_email();
 		$headers = array(
@@ -53,6 +56,9 @@ final class Emails {
 
 		$subject = sprintf( __( 'Aggiornamento richiesta di recesso #%d', 'indiesoft-woocommerce-recesso' ), $request['id'] );
 		$message = $this->render_message( $request, $order );
+		$heading = __( 'Aggiornamento richiesta di recesso', 'indiesoft-woocommerce-recesso' );
+		$mailer = WC()->mailer();
+		$message = $mailer->wrap_message( $heading, $message );
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
 			'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) . ' <' . sanitize_email( Settings::get( 'admin_email', get_option( 'admin_email' ) ) ) . '>',
