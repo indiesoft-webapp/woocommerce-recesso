@@ -25,14 +25,19 @@ final class Emails {
 	public function notify_created( $request, $order ) {
 		$subject = sprintf( __( 'Richiesta di recesso #%1$d per ordine #%2$s', 'indiesoft-woocommerce-recesso' ), $request['id'], $order->get_order_number() );
 		$message = $this->render_message( $request, $order );
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		$admin_email = sanitize_email( Settings::get( 'admin_email', get_option( 'admin_email' ) ) );
+		$customer_email = is_email( $request['customer_email'] ?? '' ) ? $request['customer_email'] : $order->get_billing_email();
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) . ' <' . $admin_email . '>',
+		);
 
-		if ( 'yes' === Settings::get( 'admin_email_enabled' ) ) {
-			wp_mail( Settings::get( 'admin_email', get_option( 'admin_email' ) ), $subject, $message, $headers );
+		if ( 'yes' === Settings::get( 'admin_email_enabled' ) && is_email( $admin_email ) ) {
+			wp_mail( $admin_email, $subject, $message, $headers );
 		}
 
-		if ( 'yes' === Settings::get( 'customer_email' ) ) {
-			wp_mail( $order->get_billing_email(), $subject, $message, $headers );
+		if ( 'yes' === Settings::get( 'customer_email' ) && is_email( $customer_email ) ) {
+			wp_mail( $customer_email, $subject, $message, $headers );
 		}
 	}
 
@@ -41,10 +46,19 @@ final class Emails {
 			return;
 		}
 
+		$customer_email = is_email( $request['customer_email'] ?? '' ) ? $request['customer_email'] : $order->get_billing_email();
+		if ( ! is_email( $customer_email ) ) {
+			return;
+		}
+
 		$subject = sprintf( __( 'Aggiornamento richiesta di recesso #%d', 'indiesoft-woocommerce-recesso' ), $request['id'] );
 		$message = $this->render_message( $request, $order );
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ) . ' <' . sanitize_email( Settings::get( 'admin_email', get_option( 'admin_email' ) ) ) . '>',
+		);
 
-		wp_mail( $order->get_billing_email(), $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+		wp_mail( $customer_email, $subject, $message, $headers );
 	}
 
 	private function render_message( $request, $order ) {
