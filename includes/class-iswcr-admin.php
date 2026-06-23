@@ -98,9 +98,7 @@ final class Admin {
 		?>
 		<div class="wrap iswcr-wrap">
 			<?php $this->render_brand_header( __( 'Richieste di recesso', 'indiesoft-woocommerce-recesso' ) ); ?>
-			<?php if ( isset( $_GET['updated'] ) ) : ?>
-				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Richiesta aggiornata.', 'indiesoft-woocommerce-recesso' ); ?></p></div>
-			<?php endif; ?>
+			<?php $this->render_updated_notice(); ?>
 			<ul class="subsubsub">
 				<li><a href="<?php echo esc_url( admin_url( 'admin.php?page=iswcr-requests' ) ); ?>"><?php esc_html_e( 'Tutte', 'indiesoft-woocommerce-recesso' ); ?></a> | </li>
 				<?php foreach ( array( 'new', 'in_review', 'approved', 'rejected', 'completed' ) as $key ) : ?>
@@ -146,6 +144,7 @@ final class Admin {
 		?>
 		<div class="wrap iswcr-wrap">
 			<?php $this->render_brand_header( sprintf( __( 'Richiesta #%d', 'indiesoft-woocommerce-recesso' ), $request_id ) ); ?>
+			<?php $this->render_updated_notice(); ?>
 			<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=iswcr-requests' ) ); ?>">&larr; <?php esc_html_e( 'Torna alle richieste', 'indiesoft-woocommerce-recesso' ); ?></a></p>
 			<div class="iswcr-grid">
 				<section class="iswcr-panel">
@@ -217,6 +216,7 @@ final class Admin {
 		?>
 		<div class="wrap iswcr-wrap">
 			<?php $this->render_brand_header( __( 'Impostazioni recesso', 'indiesoft-woocommerce-recesso' ) ); ?>
+			<?php $this->render_updated_notice2(); ?>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'iswcr_settings_group' ); ?>
 				<table class="form-table" role="presentation">
@@ -263,6 +263,7 @@ final class Admin {
 							<label class="iswcr-check"><input type="checkbox" name="<?php echo esc_attr( Settings::OPTION_NAME ); ?>[customer_email]" value="yes" <?php checked( $settings['customer_email'], 'yes' ); ?>> <?php esc_html_e( 'Invia email al cliente', 'indiesoft-woocommerce-recesso' ); ?></label>
 							<label class="iswcr-check"><input type="checkbox" name="<?php echo esc_attr( Settings::OPTION_NAME ); ?>[admin_email_enabled]" value="yes" <?php checked( $settings['admin_email_enabled'], 'yes' ); ?>> <?php esc_html_e( 'Invia email amministratore', 'indiesoft-woocommerce-recesso' ); ?></label>
 							<input type="email" class="regular-text" name="<?php echo esc_attr( Settings::OPTION_NAME ); ?>[admin_email]" value="<?php echo esc_attr( $settings['admin_email'] ); ?>">
+							<input type="hidden" name="updated_settings" value="1" />
 						</td>
 					</tr>
 					<tr>
@@ -279,6 +280,25 @@ final class Admin {
 		</div>
 		<?php
 	}
+
+	private function render_updated_notice() {
+		if ( ! isset( $_GET['updated'] ) ) {
+			return;
+		}
+		?>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Richiesta aggiornata.', 'indiesoft-woocommerce-recesso' ); ?></p></div>
+		<?php
+	}
+
+	private function render_updated_notice2() {		
+		if ( ! isset( $_POST['updated_settings'] ) ) {
+			return;
+		}
+
+		?>
+		<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Configurazione aggiornata.', 'indiesoft-woocommerce-recesso' ); ?></p></div>
+		<?php
+		}
 
 	private function render_brand_header( $title ) {
 		$logo = ISWCR_URL . 'assets/images/vendor-logo.png';

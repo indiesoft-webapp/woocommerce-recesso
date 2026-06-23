@@ -1,0 +1,25 @@
+.iswcr-status {
+	border-radius: 999px;
+	display: inline-block;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 3px 8px;
+}
+
+.iswcr-status-new,
+.iswcr-status-in_review {
+	background: #fff4cc;
+	color: #674e00;
+}
+
+.iswcr-status-approved,
+.iswcr-status-completed {
+	background: #dff5e7;
+	color: #0a4b24;
+}
+
+.iswcr-status-rejected,
+.iswcr-status-cancelled {
+	background: #ffe2e2;
+	color: #8a2424;
+}

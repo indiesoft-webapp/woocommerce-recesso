@@ -26,12 +26,23 @@ final class Frontend {
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_filter( 'woocommerce_account_menu_items', array( $this, 'account_menu_items' ) );
 		add_action( 'woocommerce_account_' . Settings::get( 'endpoint', 'recesso' ) . '_endpoint', array( $this, 'render_account_page' ) );
-		//add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
+		add_filter( 'woocommerce_account_orders_columns', array( $this, 'account_orders_columns' ) );
+		add_action( 'woocommerce_my_account_my_orders_column_iswcr_status', array( $this, 'account_orders_column_status' ) );
+		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'woocommerce_thankyou', array( $this, 'render_order_button_by_id' ), 20 );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'render_order_button' ) );
 		add_filter( 'the_content', array( $this, 'append_order_received_button' ), 20 );
 		add_action( 'template_redirect', array( $this, 'handle_submission' ) );
 		add_shortcode( 'indiesoft_recesso', array( $this, 'shortcode' ) );
+	}
+
+	public function enqueue_assets() {
+		if ( ! is_account_page() ) {
+			return;
+		}
+
+		wp_enqueue_style( 'iswcr-frontend', ISWCR_URL . 'assets/frontend.css', array(), ISWCR_VERSION );
 	}
 
 	public function add_endpoint() {
@@ -80,6 +91,7 @@ final class Frontend {
 	public function render_account_page() {
 		$order_id = absint( $_GET['order_id'] ?? 0 );
 		$order    = $order_id ? wc_get_order( $order_id ) : null;
+		$guest_key = sanitize_text_field( wp_unslash( $_GET['key'] ?? '' ) );
 
 		if ( isset( $_GET['iswcr-submitted'] ) ) {
 			wc_print_notice( Settings::get( 'success_message' ), 'success' );
@@ -98,6 +110,8 @@ final class Frontend {
 			return;
 		}
 
+		$guest_key = sanitize_text_field( wp_unslash( $_GET['key'] ?? '' ) );
+
 		if ( ! $this->current_customer_can_access_order( $order ) ) {
 			wc_print_notice( __( 'Non puoi inviare richieste per questo ordine.', 'indiesoft-woocommerce-recesso' ), 'error' );
 			echo '</div>';
@@ -111,12 +125,18 @@ final class Frontend {
 		}
 
 		if ( ! $this->order_allows_new_request( $order ) ) {
-			wc_print_notice( __( 'Esiste gia una richiesta aperta per questo ordine.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			$request = $this->get_latest_request_for_order( $order->get_id() );
+			wc_print_notice( __( 'Esiste gia una richiesta di recesso per questo ordine.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			if ( $request ) {
+				echo '<p><strong>' . esc_html__( 'Stato richiesta', 'indiesoft-woocommerce-recesso' ) . ':</strong> ';
+				echo wp_kses_post( $this->get_request_status_html( $request ) );
+				echo '</p>';
+			}
 			echo '</div>';
 			return;
 		}
 
-		$this->render_form( $order );
+		$this->render_form( $order, $guest_key );
 		echo '</div>';
 	}
 
@@ -131,18 +151,62 @@ final class Frontend {
 		);
 
 		echo '<p>' . esc_html__( 'Seleziona un ordine idoneo per aprire una richiesta.', 'indiesoft-woocommerce-recesso' ) . '</p>';
-		echo '<table class="shop_table shop_table_responsive"><thead><tr><th>' . esc_html__( 'Ordine', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Data', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Azione', 'indiesoft-woocommerce-recesso' ) . '</th></tr></thead><tbody>';
+		echo '<table class="shop_table shop_table_responsive"><thead><tr><th>' . esc_html__( 'Ordine', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Data', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Stato', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Azione', 'indiesoft-woocommerce-recesso' ) . '</th></tr></thead><tbody>';
+
+		$has_rows = false;
 
 		foreach ( $orders as $order ) {
-			if ( ! Eligibility::is_order_eligible( $order ) || ! $this->order_allows_new_request( $order ) ) {
+			if ( ! Eligibility::is_order_eligible( $order ) ) {
 				continue;
 			}
 
-			$url = add_query_arg( 'order_id', $order->get_id(), wc_get_account_endpoint_url( Settings::get( 'endpoint', 'recesso' ) ) );
-			echo '<tr><td>#' . esc_html( $order->get_order_number() ) . '</td><td>' . esc_html( wc_format_datetime( $order->get_date_created() ) ) . '</td><td><a class="button" href="' . esc_url( $url ) . '">' . esc_html( Settings::get( 'button_label' ) ) . '</a></td></tr>';
+			$has_rows      = true;
+			$request       = $this->get_latest_request_for_order( $order->get_id() );
+			$status_html   = $request ? $this->get_request_status_html( $request ) : '&mdash;';
+			$action_html   = '&mdash;';
+
+			if ( $this->order_allows_new_request( $order ) ) {
+				$url         = add_query_arg( 'order_id', $order->get_id(), wc_get_account_endpoint_url( Settings::get( 'endpoint', 'recesso' ) ) );
+				$action_html = '<a class="button" href="' . esc_url( $url ) . '">' . esc_html( Settings::get( 'button_label' ) ) . '</a>';
+			}
+
+			echo '<tr><td>#' . esc_html( $order->get_order_number() ) . '</td><td>' . esc_html( wc_format_datetime( $order->get_date_created() ) ) . '</td><td>' . wp_kses_post( $status_html ) . '</td><td>' . wp_kses_post( $action_html ) . '</td></tr>';
+		}
+
+		if ( ! $has_rows ) {
+			echo '<tr><td colspan="4">' . esc_html__( 'Nessun ordine idoneo trovato.', 'indiesoft-woocommerce-recesso' ) . '</td></tr>';
 		}
 
 		echo '</tbody></table>';
+	}
+
+	public function account_orders_columns( $columns ) {
+		$new = array();
+
+		foreach ( $columns as $key => $label ) {
+			if ( 'order-actions' === $key ) {
+				$new['iswcr_status'] = __( 'Stato', 'indiesoft-woocommerce-recesso' );
+			}
+
+			$new[ $key ] = $label;
+		}
+
+		return $new;
+	}
+
+	public function account_orders_column_status( $order ) {
+		if ( ! $order instanceof \WC_Order || ! Eligibility::is_order_eligible( $order ) ) {
+			echo '&mdash;';
+			return;
+		}
+
+		$request = $this->get_latest_request_for_order( $order->get_id() );
+		if ( ! $request ) {
+			echo '&mdash;';
+			return;
+		}
+
+		echo wp_kses_post( $this->get_request_status_html( $request ) );
 	}
 
 	private function render_guest_lookup() {
@@ -300,7 +364,7 @@ final class Frontend {
 			$request['id'] = $request_id;
 			Emails::instance()->notify_created( $request, $order );
 
-			wp_safe_redirect( add_query_arg( 'iswcr-submitted', '1', wc_get_account_endpoint_url( Settings::get( 'endpoint', 'recesso' ) ) ) );
+			wp_safe_redirect( $this->get_request_redirect_url( $order ) );
 			exit;
 		}
 
@@ -351,6 +415,9 @@ final class Frontend {
 			ob_start();
 			echo '<div class="iswcr-account iswcr-order-received-form">';
 			echo '<h2>' . esc_html__( 'Richiesta di recesso', 'indiesoft-woocommerce-recesso' ) . '</h2>';
+			if ( ! empty( $_GET['iswcr-submitted'] ) ) {
+				wc_print_notice( Settings::get( 'success_message' ), 'success' );
+			}
 			$this->render_form( $order, $order->get_order_key() );
 			echo '</div>';
 			return $content . ob_get_clean();
@@ -377,14 +444,22 @@ final class Frontend {
 	}
 
 	private function get_order_request_url( $order ) {
+		if ( ! is_user_logged_in() && 'yes' === Settings::get( 'allow_guest_by_email', 'yes' ) ) {
+			return $this->get_order_received_form_url( $order );
+		}
+
 		$url = wc_get_account_endpoint_url( Settings::get( 'endpoint', 'recesso' ) );
 		$url = add_query_arg( 'order_id', $order->get_id(), $url );
 
+		return $url;
+	}
+
+	private function get_request_redirect_url( $order ) {
 		if ( ! is_user_logged_in() && 'yes' === Settings::get( 'allow_guest_by_email', 'yes' ) ) {
-			$url = add_query_arg( 'key', $order->get_order_key(), $url );
+			return add_query_arg( 'iswcr-submitted', '1', $this->get_order_received_form_url( $order ) );
 		}
 
-		return $url;
+		return add_query_arg( 'iswcr-submitted', '1', wc_get_account_endpoint_url( Settings::get( 'endpoint', 'recesso' ) ) );
 	}
 
 	private function get_order_received_form_url( $order ) {
@@ -412,5 +487,21 @@ final class Frontend {
 		}
 
 		return true;
+	}
+
+	private function get_latest_request_for_order( $order_id ) {
+		$requests = Requests_Table::instance()->find_by_order( $order_id );
+
+		return $requests[0] ?? null;
+	}
+
+	private function get_request_status_html( $request ) {
+		$status = sanitize_key( $request['status'] ?? '' );
+
+		return sprintf(
+			'<span class="iswcr-status iswcr-status-%1$s">%2$s</span>',
+			esc_attr( $status ),
+			esc_html( Admin::status_label( $status ) )
+		);
 	}
 }
