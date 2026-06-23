@@ -42,5 +42,7 @@ Shortcode disponibile: [indiesoft_recesso]
 
 == Changelog ==
 
+= 1.1.0 =
+* Aggiornamento funzionalità richiesta recesso anche per utenti ospiti *
 = 1.0.0 =
 * Prima versione.

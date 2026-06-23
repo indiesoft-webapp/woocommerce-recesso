@@ -3,12 +3,12 @@
  * Plugin Name:       IndieSoft WooCommerce Recesso
  * Plugin URI:        https://www.indiesoft.it/
  * Description:       Modulo configurabile per gestire richieste di recesso e reso su WooCommerce.
- * Version:           1.0.1
+ * Version:           1.1.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
  * Author:            IndieSoft
- * Author URI:        https://indiesoft.it/
+ * Author URI:        https://www.indiesoft.it/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       indiesoft-woocommerce-recesso
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ISWCR_VERSION', '1.0.1' );
+define( 'ISWCR_VERSION', '1.1.0' );
 define( 'ISWCR_FILE', __FILE__ );
 define( 'ISWCR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'ISWCR_URL', plugin_dir_url( __FILE__ ) );
