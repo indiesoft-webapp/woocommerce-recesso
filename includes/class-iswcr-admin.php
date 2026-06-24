@@ -143,7 +143,8 @@ final class Admin {
 		}
 		?>
 		<div class="wrap iswcr-wrap">
-			<?php $this->render_brand_header( sprintf( __( 'Richiesta #%d', 'indiesoft-woocommerce-recesso' ), $request_id ) ); ?>
+			<?php /* translators: 1: Request id number. */
+			$this->render_brand_header( sprintf( __( 'Richiesta #%d', 'indiesoft-woocommerce-recesso' ), $request_id ) ); ?>
 			<?php $this->render_updated_notice(); ?>
 			<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=iswcr-requests' ) ); ?>">&larr; <?php esc_html_e( 'Torna alle richieste', 'indiesoft-woocommerce-recesso' ); ?></a></p>
 			<div class="iswcr-grid">
@@ -197,6 +198,7 @@ final class Admin {
 		$order   = $request ? wc_get_order( $request['order_id'] ) : null;
 
 		if ( $order ) {
+			/* translators: 1: Request id number, 2 Request status. */
 			$order->add_order_note( sprintf( __( 'Richiesta di recesso #%1$d aggiornata a: %2$s', 'indiesoft-woocommerce-recesso' ), $request_id, self::status_label( $status ) ) );
 			$order->save();
 			Emails::instance()->notify_status_changed( $request, $order );
@@ -304,7 +306,7 @@ final class Admin {
 		$logo = ISWCR_URL . 'assets/images/vendor-logo.png';
 		echo '<div class="iswcr-brand">';
 		echo '<img src="' . esc_url( $logo ) . '" alt="IndieSoft">';
-		echo '<div><h1>' . esc_html( $title ) . '</h1><p>IndieSoft WooCommerce Recesso</p></div>';
+		echo '<div><h1>' . esc_html( $title ) . '</h1><h2>IndieSoft EU Withdrawal for WooCommerce</h2></div>';
 		echo '</div>';
 	}
 }

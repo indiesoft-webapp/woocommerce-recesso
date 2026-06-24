@@ -20,10 +20,28 @@ final class Admin {
 		return self::$instance;
 	}
 
+<<<<<<< Updated upstream
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_post_iswcr_update_request', array( $this, 'handle_update_request' ) );
+=======
+	public function init() {}
+
+	public function notify_created( $request, $order ) {
+		/* translators: 1: Request ID number, 2: Order ID. */
+		$subject = sprintf( __( 'Richiesta di recesso #%1$d per ordine #%2$s', 'indiesoft-woocommerce-recesso' ), $request['id'], $order->get_order_number() );
+		$message = $this->render_message( $request, $order );
+		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+		if ( 'yes' === Settings::get( 'admin_email_enabled' ) ) {
+			wp_mail( Settings::get( 'admin_email', get_option( 'admin_email' ) ), $subject, $message, $headers );
+		}
+
+		if ( 'yes' === Settings::get( 'customer_email' ) ) {
+			wp_mail( $order->get_billing_email(), $subject, $message, $headers );
+		}
+>>>>>>> Stashed changes
 	}
 
 	public function admin_menu() {
@@ -60,6 +78,7 @@ final class Admin {
 		if ( false === strpos( $hook, 'iswcr' ) ) {
 			return;
 		}
+<<<<<<< Updated upstream
 
 		wp_enqueue_style( 'iswcr-admin', ISWCR_URL . 'assets/admin.css', array(), ISWCR_VERSION );
 	}
@@ -131,6 +150,36 @@ final class Admin {
 				</tbody>
 			</table>
 		</div>
+=======
+		/* translators: 1: Request ID number. */
+		$subject = sprintf( __( 'Aggiornamento richiesta di recesso #%d', 'indiesoft-woocommerce-recesso' ), $request['id'] );
+		$message = $this->render_message( $request, $order );
+
+		wp_mail( $order->get_billing_email(), $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+	}
+
+	private function render_message( $request, $order ) {
+		ob_start();
+		?>
+		<p><?php echo esc_html__( 'Dettagli richiesta di recesso', 'indiesoft-woocommerce-recesso' ); ?></p>
+		<ul>
+			<li><strong><?php esc_html_e( 'Ordine', 'indiesoft-woocommerce-recesso' ); ?>:</strong> #<?php echo esc_html( $order->get_order_number() ); ?></li>
+			<li><strong><?php esc_html_e( 'Data e ora ricezione', 'indiesoft-woocommerce-recesso' ); ?>:</strong> <?php echo esc_html( mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $request['created_at'] ) ); ?></li>
+			<li><strong><?php esc_html_e( 'Stato', 'indiesoft-woocommerce-recesso' ); ?>:</strong> <?php echo esc_html( Admin::status_label( $request['status'] ) ); ?></li>
+			<li><strong><?php esc_html_e( 'Motivo', 'indiesoft-woocommerce-recesso' ); ?>:</strong> <?php echo esc_html( $request['reason'] ); ?></li>
+			<li><strong><?php esc_html_e( 'Metodo preferito', 'indiesoft-woocommerce-recesso' ); ?>:</strong> <?php echo esc_html( $request['refund_method'] ); ?></li>
+		</ul>
+		<p><strong><?php esc_html_e( 'Dichiarazione', 'indiesoft-woocommerce-recesso' ); ?>:</strong><br>
+		<?php 
+		/* translators: 1: Customer Name or Email, 2: Order number. */
+		echo esc_html( sprintf( __( 'Il cliente %1$s dichiara di esercitare il diritto di recesso per il contratto relativo all ordine #%2$s.', 'indiesoft-woocommerce-recesso' ), $request['customer_name'] ?: $request['customer_email'], $order->get_order_number() ) ); ?></p>
+		<?php if ( ! empty( $request['message'] ) ) : ?>
+			<p><?php echo nl2br( esc_html( $request['message'] ) ); ?></p>
+		<?php endif; ?>
+		<?php if ( ! empty( $request['admin_note'] ) ) : ?>
+			<p><strong><?php esc_html_e( 'Nota amministratore', 'indiesoft-woocommerce-recesso' ); ?>:</strong><br><?php echo nl2br( esc_html( $request['admin_note'] ) ); ?></p>
+		<?php endif; ?>
+>>>>>>> Stashed changes
 		<?php
 	}
 

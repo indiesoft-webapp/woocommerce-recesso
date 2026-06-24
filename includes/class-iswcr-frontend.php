@@ -357,6 +357,7 @@ final class Frontend {
 		);
 
 		if ( $request_id ) {
+			/* translators: 1: Request id number. */
 			$order->add_order_note( sprintf( __( 'Nuova richiesta di recesso #%d inviata dal cliente.', 'indiesoft-woocommerce-recesso' ), $request_id ) );
 			$order->save();
 
