@@ -1,10 +1,6 @@
 <?php
 /**
-<<<<<<< Updated upstream:indiesoft-woocommerce-recesso.php
- * Plugin Name:       IndieSoft EU WithDrawal for WooCommerce
-=======
  * Plugin Name:       IndieSoft EU Withdrawal for WooCommerce
->>>>>>> Stashed changes:indiesoft-eu-withdrawal-for-woocommerce.php
  * Plugin URI:        https://github.com/indiesoft-webapp/woocommerce-recesso
  * Description:       Modulo configurabile per gestire richieste di recesso e reso su WooCommerce.
  * Version:           1.1.0

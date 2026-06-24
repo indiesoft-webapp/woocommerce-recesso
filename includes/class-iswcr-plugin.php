@@ -49,7 +49,7 @@ final class Plugin {
 
 	public function woocommerce_missing_notice() {
 		echo '<div class="notice notice-error"><p>';
-		echo esc_html__( 'IndieSoft WooCommerce Recesso richiede WooCommerce attivo.', 'indiesoft-woocommerce-recesso' );
+		echo esc_html__( 'IndieSoft EU Withdrawal for WooCommerce richiede WooCommerce attivo.', 'indiesoft-woocommerce-recesso' );
 		echo '</p></div>';
 	}
 

@@ -1,0 +1,364 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: IndieSoft EU Withdrawal for WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-24 17:36+0200\n"
+"PO-Revision-Date: 2026-06-24 17:36+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: includes/class-iswcr-admin.php:32
+msgid "Recesso"
+msgstr "Withdrawal"
+
+#: includes/class-iswcr-admin.php:42
+msgid "Richieste recesso"
+msgstr "Withdrawal Requests"
+
+#: includes/class-iswcr-admin.php:43
+msgid "Richieste"
+msgstr "Requests"
+
+#: includes/class-iswcr-admin.php:51 includes/class-iswcr-admin.php:220
+msgid "Impostazioni recesso"
+msgstr "Withdrawal Settings"
+
+#: includes/class-iswcr-admin.php:52 includes/class-iswcr-plugin.php:63
+msgid "Impostazioni"
+msgstr "Settings"
+
+#: includes/class-iswcr-admin.php:69
+msgid "Nuova"
+msgstr "New"
+
+#: includes/class-iswcr-admin.php:70
+msgid "In verifica"
+msgstr "In review"
+
+#: includes/class-iswcr-admin.php:71
+msgid "Approvata"
+msgstr "Approved"
+
+#: includes/class-iswcr-admin.php:72
+msgid "Respinta"
+msgstr "Rejected"
+
+#: includes/class-iswcr-admin.php:73
+msgid "Completata"
+msgstr "Completed"
+
+#: includes/class-iswcr-admin.php:74
+msgid "Annullata"
+msgstr "Cancelled"
+
+#: includes/class-iswcr-admin.php:82 includes/class-iswcr-admin.php:187
+#: includes/class-iswcr-admin.php:213
+msgid "Permessi insufficienti."
+msgstr "Insufficient permissions."
+
+#: includes/class-iswcr-admin.php:100
+msgid "Richieste di recesso"
+msgstr "Withdrawal requests"
+
+#: includes/class-iswcr-admin.php:103
+msgid "Tutte"
+msgstr "All"
+
+#: includes/class-iswcr-admin.php:110
+msgid "ID"
+msgstr "ID"
+
+#: includes/class-iswcr-admin.php:111 includes/class-iswcr-admin.php:153
+#: includes/class-iswcr-emails.php:56 includes/class-iswcr-frontend.php:154
+msgid "Ordine"
+msgstr "Order"
+
+#: includes/class-iswcr-admin.php:112 includes/class-iswcr-admin.php:154
+msgid "Cliente"
+msgstr "Customer"
+
+#: includes/class-iswcr-admin.php:113 includes/class-iswcr-admin.php:155
+#: includes/class-iswcr-emails.php:59 includes/class-iswcr-frontend.php:273
+msgid "Motivo"
+msgstr "Reason"
+
+#: includes/class-iswcr-admin.php:114 includes/class-iswcr-admin.php:166
+#: includes/class-iswcr-emails.php:58 includes/class-iswcr-frontend.php:154
+#: includes/class-iswcr-frontend.php:188
+msgid "Stato"
+msgstr "Status"
+
+#: includes/class-iswcr-admin.php:115 includes/class-iswcr-frontend.php:154
+msgid "Data"
+msgstr "Date"
+
+#: includes/class-iswcr-admin.php:119
+msgid "Nessuna richiesta trovata."
+msgstr "No requests found."
+
+#: includes/class-iswcr-admin.php:142
+msgid "Richiesta non trovata."
+msgstr "Request not found."
+
+#: includes/class-iswcr-admin.php:147
+#, php-format
+msgid "Richiesta #%d"
+msgstr "Request #%d"
+
+#: includes/class-iswcr-admin.php:149
+msgid "Torna alle richieste"
+msgstr "Back to requests"
+
+#: includes/class-iswcr-admin.php:152
+msgid "Dettagli"
+msgstr "Details"
+
+#: includes/class-iswcr-admin.php:156 includes/class-iswcr-emails.php:60
+#: includes/class-iswcr-frontend.php:282
+msgid "Metodo preferito"
+msgstr "Preferred method"
+
+#: includes/class-iswcr-admin.php:157
+msgid "Messaggio"
+msgstr "Message"
+
+#: includes/class-iswcr-admin.php:160
+msgid "Aggiorna stato"
+msgstr "Update status"
+
+#: includes/class-iswcr-admin.php:174
+msgid "Nota per il cliente"
+msgstr "Customer note"
+
+#: includes/class-iswcr-admin.php:177
+msgid "Aggiorna richiesta"
+msgstr "Update request"
+
+#: includes/class-iswcr-admin.php:202
+#, php-format
+msgid "Richiesta di recesso #%1$d aggiornata a: %2$s"
+msgstr "Withdrawal request #%1$d updated to: %2$s"
+
+#: includes/class-iswcr-admin.php:226
+msgid "Abilita modulo"
+msgstr "Enable module"
+
+#: includes/class-iswcr-admin.php:227
+msgid "Attivo"
+msgstr "Active"
+
+#: includes/class-iswcr-admin.php:230
+msgid "Endpoint account"
+msgstr "Account endpoint"
+
+#: includes/class-iswcr-admin.php:234
+msgid "Giorni disponibili"
+msgstr "Available days"
+
+#: includes/class-iswcr-admin.php:238
+msgid "Stati ordine idonei"
+msgstr "Eligible order statuses"
+
+#: includes/class-iswcr-admin.php:247
+msgid "Motivi selezionabili"
+msgstr "Selectable reasons"
+
+#: includes/class-iswcr-admin.php:251
+msgid "Metodi preferiti"
+msgstr "Preferred methods"
+
+#: includes/class-iswcr-admin.php:255
+msgid "Testo informativo"
+msgstr "Informational text"
+
+#: includes/class-iswcr-admin.php:256
+msgid "Usa {days} per inserire il numero di giorni configurato."
+msgstr "Use {days} to insert the configured number of days."
+
+#: includes/class-iswcr-admin.php:259
+msgid "Etichetta pulsante"
+msgstr "Button label"
+
+#: includes/class-iswcr-admin.php:263
+msgid "Notifiche"
+msgstr "Notifications"
+
+#: includes/class-iswcr-admin.php:265
+msgid "Invia email al cliente"
+msgstr "Send email to customer"
+
+#: includes/class-iswcr-admin.php:266
+msgid "Invia email amministratore"
+msgstr "Send email to administrator"
+
+#: includes/class-iswcr-admin.php:272
+msgid "Conferme cliente"
+msgstr "Customer confirmations"
+
+#: includes/class-iswcr-admin.php:274
+msgid "Richiedi accettazione condizioni"
+msgstr "Require acceptance of terms"
+
+#: includes/class-iswcr-admin.php:275
+msgid "Consenti recesso per ordini guest tramite numero ordine ed email"
+msgstr "Allow withdrawal for guest orders by order number and email"
+
+#: includes/class-iswcr-admin.php:276
+msgid "Consenti piu richieste aperte per lo stesso ordine"
+msgstr "Allow multiple open requests for the same order"
+
+#: includes/class-iswcr-admin.php:291
+msgid "Richiesta aggiornata."
+msgstr "Request updated."
+
+#: includes/class-iswcr-admin.php:301
+msgid "Configurazione aggiornata."
+msgstr "Configuration updated."
+
+#: includes/class-iswcr-emails.php:27
+#, php-format
+msgid "Richiesta di recesso #%1$d per ordine #%2$s"
+msgstr "Withdrawal request #%1$d for order #%2$s"
+
+#: includes/class-iswcr-emails.php:45
+#, php-format
+msgid "Aggiornamento richiesta di recesso #%d"
+msgstr "Withdrawal request #%d update"
+
+#: includes/class-iswcr-emails.php:54
+msgid "Dettagli richiesta di recesso"
+msgstr "Withdrawal request details"
+
+#: includes/class-iswcr-emails.php:57
+msgid "Data e ora ricezione"
+msgstr "Received date and time"
+
+#: includes/class-iswcr-emails.php:62
+msgid "Dichiarazione"
+msgstr "Statement"
+
+#: includes/class-iswcr-emails.php:65
+#, php-format
+msgid ""
+"Il cliente %1$s dichiara di esercitare il diritto di recesso per il "
+"contratto relativo all ordine #%2$s."
+msgstr ""
+
+#: includes/class-iswcr-emails.php:70
+msgid "Nota amministratore"
+msgstr "Administrator note"
+
+#: includes/class-iswcr-frontend.php:64
+msgid "Recesso e resi"
+msgstr "Withdrawal and returns"
+
+#: includes/class-iswcr-frontend.php:78
+msgid "Richiedi recesso"
+msgstr "Request withdrawal"
+
+#: includes/class-iswcr-frontend.php:101 includes/class-iswcr-frontend.php:418
+msgid "Richiesta di recesso"
+msgstr "Withdrawal request"
+
+#: includes/class-iswcr-frontend.php:116
+msgid "Non puoi inviare richieste per questo ordine."
+msgstr "You cannot submit requests for this order."
+
+#: includes/class-iswcr-frontend.php:122 includes/class-iswcr-frontend.php:238
+msgid "Questo ordine non e idoneo alla richiesta di recesso."
+msgstr "This order is not eligible for withdrawal request."
+
+#: includes/class-iswcr-frontend.php:129
+msgid "Esiste gia una richiesta di recesso per questo ordine."
+msgstr "There is already a withdrawal request for this order."
+
+#: includes/class-iswcr-frontend.php:131
+msgid "Stato richiesta"
+msgstr "Request status"
+
+#: includes/class-iswcr-frontend.php:153
+msgid "Seleziona un ordine idoneo per aprire una richiesta."
+msgstr "Select an eligible order to open a request."
+
+#: includes/class-iswcr-frontend.php:154
+msgid "Azione"
+msgstr "Action"
+
+#: includes/class-iswcr-frontend.php:177
+msgid "Nessun ordine idoneo trovato."
+msgstr "No eligible orders found."
+
+#: includes/class-iswcr-frontend.php:214
+msgid "Accedi al tuo account per richiedere il recesso."
+msgstr "Log in to your account to request withdrawal."
+
+#: includes/class-iswcr-frontend.php:227
+msgid "Ordine non trovato con questi dati."
+msgstr "Order not found with these details."
+
+#: includes/class-iswcr-frontend.php:245
+msgid "Numero ordine"
+msgstr "Order number"
+
+#: includes/class-iswcr-frontend.php:249
+msgid "Email usata per l ordine"
+msgstr "Email used for the order"
+
+#: includes/class-iswcr-frontend.php:252
+msgid "Avvia recesso"
+msgstr "Start withdrawal"
+
+#: includes/class-iswcr-frontend.php:262
+msgid "Scadenza richiesta"
+msgstr "Request deadline"
+
+#: includes/class-iswcr-frontend.php:291
+msgid "Prodotti interessati"
+msgstr "Products involved"
+
+#: includes/class-iswcr-frontend.php:301
+msgid "Note"
+msgstr "Notes"
+
+#: includes/class-iswcr-frontend.php:307
+msgid "Confermo di aver letto le condizioni di recesso."
+msgstr "I confirm that I have read the withdrawal terms."
+
+#: includes/class-iswcr-frontend.php:311
+msgid ""
+"Confermo di voler esercitare il diritto di recesso per il contratto relativo "
+"a questo ordine."
+msgstr ""
+
+#: includes/class-iswcr-frontend.php:325
+msgid "Controllo di sicurezza non valido."
+msgstr "Invalid security check."
+
+#: includes/class-iswcr-frontend.php:331
+msgid "Ordine non valido o non idoneo."
+msgstr "Invalid or ineligible order."
+
+#: includes/class-iswcr-frontend.php:336
+msgid "Devi accettare le condizioni di recesso."
+msgstr "You must accept the withdrawal terms."
+
+#: includes/class-iswcr-frontend.php:341
+msgid "Devi confermare la volonta di esercitare il recesso."
+msgstr "You must confirm your intent to exercise the withdrawal."
+
+#: includes/class-iswcr-frontend.php:361
+#, php-format
+msgid "Nuova richiesta di recesso #%d inviata dal cliente."
+msgstr "New withdrawal request #%d submitted by the customer."
+
+#: includes/class-iswcr-frontend.php:372
+msgid "Non e stato possibile salvare la richiesta."
+msgstr "The request could not be saved."
+
+#: includes/class-iswcr-plugin.php:52
+msgid "IndieSoft EU Withdrawal for WooCommerce richiede WooCommerce attivo."
+msgstr "IndieSoft EU Withdrawal for WooCommerce requires WooCommerce to be active."
