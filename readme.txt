@@ -1,48 +1,49 @@
-=== IndieSoft WooCommerce Recesso ===
+=== IndieSoft EU Withdrawal for WooCommerce ===
 Contributors: indiesoft
-Tags: woocommerce, recesso, resi, ecommerce, gdpr
+Tags: woocommerce, recesso, resi, gdpr, withdrawal
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 8.2
 WC tested up to: 10.8
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Modulo configurabile per gestire richieste di recesso e reso negli store WooCommerce.
+Configurable module to manage withdrawal and return requests in WooCommerce stores.
 
 == Description ==
 
-IndieSoft WooCommerce Recesso aggiunge un workflow scalabile per il diritto di recesso:
+IndieSoft EU Withdrawal for WooCommerce adds a scalable workflow for the right of withdrawal:
 
-* Endpoint in "Il mio account".
-* Pulsante esplicito sugli ordini idonei.
-* Pulsante nelle pagine ordine e thank-you quando l ordine e idoneo.
-* Lookup per ordini guest tramite numero ordine ed email.
-* Finestra temporale configurabile.
-* Stati ordine idonei configurabili.
-* Motivi e metodi di rimborso personalizzabili.
-* Conferma obbligatoria della volonta di recedere.
-* Ricevuta email con dichiarazione, data e ora di ricezione.
-* Registro richieste in tabella dedicata.
-* Gestione stato richiesta da back office.
-* Notifiche email a cliente e amministratore.
-* Compatibilita dichiarata con HPOS.
+* Endpoint in "My Account".
+* Explicit button on eligible orders.
+* Button on order and thank-you pages when the order is eligible.
+* Lookup for guest orders via order number and email.
+* Configurable time window.
+* Configurable eligible order statuses.
+* Customizable refund reasons and methods.
+* Mandatory confirmation of the intention to withdraw.
+* Email receipt with declaration, date, and time of receipt.
+* Request log in a dedicated table.
+* Request status management from the back office.
+* Email notifications to customers and administrators.
+* Declared compatibility with HPOS.
 
-Shortcode disponibile: [indiesoft_recesso]
+Available shortcode: [indiesoft_recesso]
 
 == Installation ==
 
-1. Carica la cartella del plugin in wp-content/plugins.
-2. Attiva WooCommerce.
-3. Attiva IndieSoft WooCommerce Recesso.
-4. Vai in Recesso > Impostazioni.
-5. Salva i permalink se cambi lo slug endpoint.
+1. Upload the plugin folder to wp-content/plugins.
+2. Activate WooCommerce.
+3. Activate IndieSoft WooCommerce Withdrawal.
+4. Go to Privacy > Settings.
+5. Save the permalinks if you change the endpoint slug.
 
 == Changelog ==
 
 = 1.1.0 =
-* Aggiornamento funzionalità richiesta recesso anche per utenti ospiti *
+* Update email and add guest request
+
 = 1.0.0 =
-* Prima versione.
+* First version.
