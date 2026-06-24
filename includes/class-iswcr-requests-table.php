@@ -74,7 +74,11 @@ final class Requests_Table {
 		global $wpdb;
 
 		$row = $wpdb->get_row(
-			$wpdb->prepare( 'SELECT * FROM ' . self::table_name() . ' WHERE id = %d', absint( $id ) ),
+			$wpdb->prepare(
+			    'SELECT * FROM %i WHERE id = %d',
+		    	self::table_name(),
+			    absint( $id )
+			),
 			ARRAY_A
 		);
 
@@ -89,14 +93,18 @@ final class Requests_Table {
 		global $wpdb;
 
 		return $wpdb->get_results(
-			$wpdb->prepare( 'SELECT * FROM ' . self::table_name() . ' WHERE order_id = %d ORDER BY created_at DESC', absint( $order_id ) ),
+			$wpdb->prepare(
+			    'SELECT * FROM %i WHERE order_id = %d ORDER BY created_at DESC',
+		    	self::table_name(),
+			    absint( $order_id )
+			),
 			ARRAY_A
-		);
+		);			
 	}
 
 	public function query( $args = array() ) {
 		global $wpdb;
-
+		
 		$args = wp_parse_args(
 			$args,
 			array(
@@ -105,22 +113,28 @@ final class Requests_Table {
 				'paged'    => 1,
 			)
 		);
-
+		
 		$where  = 'WHERE 1=1';
-		$params = array();
-
+		$params = array( self::table_name() ); // %i come primo placeholder
+		
 		if ( $args['status'] ) {
 			$where   .= ' AND status = %s';
 			$params[] = sanitize_key( $args['status'] );
 		}
-
+		
 		$limit    = max( 1, absint( $args['per_page'] ) );
 		$offset   = max( 0, ( absint( $args['paged'] ) - 1 ) * $limit );
-		$sql      = 'SELECT * FROM ' . self::table_name() . " {$where} ORDER BY created_at DESC LIMIT %d OFFSET %d";
+		//$sql      = 'SELECT * FROM %i ' . $where . ' ORDER BY created_at DESC LIMIT %d OFFSET %d';
 		$params[] = $limit;
 		$params[] = $offset;
-
-		return $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
+		
+		return $wpdb->get_results( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter
+			$wpdb->prepare( // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				'SELECT * FROM %i ' . $where . ' ORDER BY created_at DESC LIMIT %d OFFSET %d',
+				$params
+			), 
+			ARRAY_A 
+		);
 	}
 
 	public function count( $status = '' ) {
@@ -128,10 +142,16 @@ final class Requests_Table {
 
 		if ( $status ) {
 			return (int) $wpdb->get_var(
-				$wpdb->prepare( 'SELECT COUNT(*) FROM ' . self::table_name() . ' WHERE status = %s', sanitize_key( $status ) )
+				$wpdb->prepare(
+					'SELECT COUNT(*) FROM %i WHERE status = %s',
+					self::table_name(),
+					sanitize_key( $status )
+				)
 			);
 		}
 
-		return (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . self::table_name() );
+		return (int) $wpdb->get_var( // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter
+    	$wpdb->prepare( 'SELECT COUNT(*) FROM %i', self::table_name() )
+		);
 	}
 }
