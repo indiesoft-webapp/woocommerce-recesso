@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       IndieSoft WooCommerce Recesso
- * Plugin URI:        https://www.indiesoft.it/
+ * Plugin Name:       IndieSoft EU WithDrawal for WooCommerce
+ * Plugin URI:        https://github.com/indiesoft-webapp/woocommerce-recesso
  * Description:       Modulo configurabile per gestire richieste di recesso e reso su WooCommerce.
  * Version:           1.1.0
  * Requires at least: 6.5
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'ISWCR_VERSION', '1.1.0' );
+define( 'ISWCR_VERSION', '1.0.1' );
 define( 'ISWCR_FILE', __FILE__ );
 define( 'ISWCR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'ISWCR_URL', plugin_dir_url( __FILE__ ) );
