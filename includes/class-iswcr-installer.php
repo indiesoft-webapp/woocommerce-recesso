@@ -2,10 +2,10 @@
 /**
  * Installation routines.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ final class Installer {
 			add_option( Settings::OPTION_NAME, Settings::defaults() );
 		}
 
-		update_option( 'iswcr_version', ISWCR_VERSION );
+		update_option( 'iswcr_version', IRWR_VERSION );
 	}
 
 	private static function create_tables() {

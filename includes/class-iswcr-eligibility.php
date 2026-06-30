@@ -2,10 +2,10 @@
 /**
  * Order eligibility rules.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 

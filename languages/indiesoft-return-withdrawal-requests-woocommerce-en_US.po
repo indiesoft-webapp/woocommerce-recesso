@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: IndieSoft EU Withdrawal for WooCommerce\n"
+"Project-Id-Version: IndieSoft Return and Withdrawal Requests for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-24 17:36+0200\n"
 "PO-Revision-Date: 2026-06-24 17:36+0200\n"
@@ -332,7 +332,7 @@ msgstr "I confirm that I have read the withdrawal terms."
 msgid ""
 "Confermo di voler esercitare il diritto di recesso per il contratto relativo "
 "a questo ordine."
-msgstr ""
+msgstr "I confirm that I wish to exercise the right of withdrawal for the contract relating to this order."
 
 #: includes/class-iswcr-frontend.php:325
 msgid "Controllo di sicurezza non valido."
@@ -359,6 +359,10 @@ msgstr "New withdrawal request #%d submitted by the customer."
 msgid "Non e stato possibile salvare la richiesta."
 msgstr "The request could not be saved."
 
+#: includes/class-iswcr-settings.php:39
+msgid "Recedere dal contratto qui"
+msgstr "Withdraw from contract here"
+
 #: includes/class-iswcr-plugin.php:52
-msgid "IndieSoft EU Withdrawal for WooCommerce richiede WooCommerce attivo."
-msgstr "IndieSoft EU Withdrawal for WooCommerce requires WooCommerce to be active."
+msgid "IndieSoft Return and Withdrawal Requests for WooCommerce richiede WooCommerce attivo."
+msgstr "IndieSoft Return and Withdrawal Requests for WooCommerce requires WooCommerce to be active."

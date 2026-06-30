@@ -2,10 +2,10 @@
 /**
  * Plugin settings.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -35,9 +35,9 @@ final class Settings {
 			'eligible_statuses'    => array( 'pending', 'on-hold', 'processing', 'completed' ),
 			'reasons'              => "Ho cambiato idea\nProdotto non conforme\nProdotto danneggiato\nOrdine errato",
 			'refund_methods'       => "Rimborso sul metodo di pagamento originale\nBuono store\nSostituzione prodotto",
-			'policy_text'          => 'Puoi esercitare il diritto di recesso entro {days} giorni dalla data dell ordine, se previsto dalle condizioni di vendita.',
-			'button_label'         => 'Recedere dal contratto qui',
-			'success_message'      => 'La dichiarazione di recesso e stata trasmessa correttamente. Riceverai una ricevuta via email.',
+			'policy_text'          => 'Puoi esercitare il diritto di recesso entro {days} giorni dalla data dell\'ordine, se previsto dalle condizioni di vendita.',
+			'button_label'         => __( 'Recedere dal contratto qui', 'indiesoft-return-withdrawal-requests-woocommerce' ),
+			'success_message'      => 'La dichiarazione di recesso è stata trasmessa correttamente. Riceverai una ricevuta via email.',
 			'customer_email'       => 'yes',
 			'admin_email'          => get_option( 'admin_email' ),
 			'admin_email_enabled'  => 'yes',
@@ -54,7 +54,13 @@ final class Settings {
 			return $settings;
 		}
 
-		return array_key_exists( $key, $settings ) ? $settings[ $key ] : $default;
+		$value = array_key_exists( $key, $settings ) ? $settings[ $key ] : $default;
+
+		if ( 'button_label' === $key && is_string( $value ) ) {
+			$value = __( $value, 'indiesoft-return-withdrawal-requests-woocommerce' );
+		}
+
+		return $value;
 	}
 
 	public function register_settings() {

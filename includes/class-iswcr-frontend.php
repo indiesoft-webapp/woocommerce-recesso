@@ -2,10 +2,10 @@
 /**
  * Customer-facing account endpoint and form handling.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -28,13 +28,13 @@ final class Frontend {
 		add_action( 'woocommerce_account_' . Settings::get( 'endpoint', 'recesso' ) . '_endpoint', array( $this, 'render_account_page' ) );
 		add_filter( 'woocommerce_account_orders_columns', array( $this, 'account_orders_columns' ) );
 		add_action( 'woocommerce_my_account_my_orders_column_iswcr_status', array( $this, 'account_orders_column_status' ) );
-		add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
+		//add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'order_actions' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'woocommerce_thankyou', array( $this, 'render_order_button_by_id' ), 20 );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'render_order_button' ) );
 		add_filter( 'the_content', array( $this, 'append_order_received_button' ), 20 );
 		add_action( 'template_redirect', array( $this, 'handle_submission' ) );
-		add_shortcode( 'indiesoft_recesso', array( $this, 'shortcode' ) );
+		add_shortcode( 'indiesoft_rwrw', array( $this, 'shortcode' ) );
 	}
 
 	public function enqueue_assets() {
@@ -42,7 +42,8 @@ final class Frontend {
 			return;
 		}
 
-		wp_enqueue_style( 'iswcr-frontend', ISWCR_URL . 'assets/frontend.css', array(), ISWCR_VERSION );
+		wp_enqueue_style( 'iswcr-frontend', IRWR_URL . 'assets/frontend.css', array(), IRWR_VERSION );
+		wp_enqueue_script( 'iswcr-frontend', IRWR_URL . 'assets/frontend.js', array(), IRWR_VERSION, true );
 	}
 
 	public function add_endpoint() {
@@ -61,7 +62,7 @@ final class Frontend {
 		foreach ( $items as $key => $label ) {
 			$new[ $key ] = $label;
 			if ( 'orders' === $key ) {
-				$new[ $endpoint ] = __( 'Recesso e resi', 'indiesoft-woocommerce-recesso' );
+				$new[ $endpoint ] = __( 'Recesso e resi', 'indiesoft-return-withdrawal-requests-woocommerce' );
 			}
 		}
 
@@ -75,7 +76,7 @@ final class Frontend {
 
 			$actions['iswcr_request'] = array(
 				'url'  => $url,
-				'name' => Settings::get( 'button_label', __( 'Richiedi recesso', 'indiesoft-woocommerce-recesso' ) ),
+				'name' => Settings::get( 'button_label', __( 'Richiedi recesso', 'indiesoft-return-withdrawal-requests-woocommerce' ) ),
 			);
 		}
 
@@ -98,7 +99,7 @@ final class Frontend {
 		}
 
 		echo '<div class="iswcr-account">';
-		echo '<h2>' . esc_html__( 'Richiesta di recesso', 'indiesoft-woocommerce-recesso' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Richiesta di recesso', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</h2>';
 
 		if ( ! $order ) {
 			if ( is_user_logged_in() ) {
@@ -110,25 +111,23 @@ final class Frontend {
 			return;
 		}
 
-		$guest_key = sanitize_text_field( wp_unslash( $_GET['key'] ?? '' ) );
-
 		if ( ! $this->current_customer_can_access_order( $order ) ) {
-			wc_print_notice( __( 'Non puoi inviare richieste per questo ordine.', 'indiesoft-woocommerce-recesso' ), 'error' );
+			wc_print_notice( __( 'Non puoi inviare richieste per questo ordine.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 			echo '</div>';
 			return;
 		}
 
 		if ( ! Eligibility::is_order_eligible( $order ) ) {
-			wc_print_notice( __( 'Questo ordine non e idoneo alla richiesta di recesso.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			wc_print_notice( __( 'Questo ordine non è idoneo alla richiesta di recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'notice' );
 			echo '</div>';
 			return;
 		}
 
 		if ( ! $this->order_allows_new_request( $order ) ) {
 			$request = $this->get_latest_request_for_order( $order->get_id() );
-			wc_print_notice( __( 'Esiste gia una richiesta di recesso per questo ordine.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			wc_print_notice( __( 'Esiste gia una richiesta di recesso per questo ordine.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'notice' );
 			if ( $request ) {
-				echo '<p><strong>' . esc_html__( 'Stato richiesta', 'indiesoft-woocommerce-recesso' ) . ':</strong> ';
+				echo '<p><strong>' . esc_html__( 'Stato richiesta', 'indiesoft-return-withdrawal-requests-woocommerce' ) . ':</strong> ';
 				echo wp_kses_post( $this->get_request_status_html( $request ) );
 				echo '</p>';
 			}
@@ -150,8 +149,8 @@ final class Frontend {
 			)
 		);
 
-		echo '<p>' . esc_html__( 'Seleziona un ordine idoneo per aprire una richiesta.', 'indiesoft-woocommerce-recesso' ) . '</p>';
-		echo '<table class="shop_table shop_table_responsive"><thead><tr><th>' . esc_html__( 'Ordine', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Data', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Stato', 'indiesoft-woocommerce-recesso' ) . '</th><th>' . esc_html__( 'Azione', 'indiesoft-woocommerce-recesso' ) . '</th></tr></thead><tbody>';
+		echo '<p>' . esc_html__( 'Seleziona un ordine idoneo per aprire una richiesta.', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</p>';
+		echo '<table class="shop_table shop_table_responsive"><thead><tr><th>' . esc_html__( 'Ordine', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</th><th>' . esc_html__( 'Data', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</th><th>' . esc_html__( 'Stato', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</th><th>' . esc_html__( 'Azione', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</th></tr></thead><tbody>';
 
 		$has_rows = false;
 
@@ -174,7 +173,7 @@ final class Frontend {
 		}
 
 		if ( ! $has_rows ) {
-			echo '<tr><td colspan="4">' . esc_html__( 'Nessun ordine idoneo trovato.', 'indiesoft-woocommerce-recesso' ) . '</td></tr>';
+			echo '<tr><td colspan="4">' . esc_html__( 'Nessun ordine idoneo trovato.', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</td></tr>';
 		}
 
 		echo '</tbody></table>';
@@ -185,7 +184,7 @@ final class Frontend {
 
 		foreach ( $columns as $key => $label ) {
 			if ( 'order-actions' === $key ) {
-				$new['iswcr_status'] = __( 'Stato', 'indiesoft-woocommerce-recesso' );
+				$new['iswcr_status'] = __( 'Stato', 'indiesoft-return-withdrawal-requests-woocommerce' );
 			}
 
 			$new[ $key ] = $label;
@@ -211,7 +210,7 @@ final class Frontend {
 
 	private function render_guest_lookup() {
 		if ( 'yes' !== Settings::get( 'allow_guest_by_email', 'yes' ) ) {
-			wc_print_notice( __( 'Accedi al tuo account per richiedere il recesso.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			wc_print_notice( __( 'Accedi al tuo account per richiedere il recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'notice' );
 			return;
 		}
 
@@ -224,7 +223,7 @@ final class Frontend {
 
 				if ( ! $order || strtolower( $order->get_billing_email() ) !== strtolower( $email ) ) {
 					$order = null;
-					wc_print_notice( __( 'Ordine non trovato con questi dati.', 'indiesoft-woocommerce-recesso' ), 'error' );
+					wc_print_notice( __( 'Ordine non trovato con questi dati.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 				}
 			}
 		}
@@ -235,21 +234,21 @@ final class Frontend {
 		}
 
 		if ( $order ) {
-			wc_print_notice( __( 'Questo ordine non e idoneo alla richiesta di recesso.', 'indiesoft-woocommerce-recesso' ), 'notice' );
+			wc_print_notice( __( 'Questo ordine non è idoneo alla richiesta di recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'notice' );
 		}
 		?>
 		<form method="post" class="iswcr-lookup-form">
 			<?php wp_nonce_field( 'iswcr_lookup_order', 'iswcr_lookup_nonce' ); ?>
 			<input type="hidden" name="iswcr_action" value="lookup_order">
 			<p>
-				<label for="iswcr_lookup_order_id"><?php esc_html_e( 'Numero ordine', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label for="iswcr_lookup_order_id"><?php esc_html_e( 'Numero ordine', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				<input id="iswcr_lookup_order_id" type="number" name="lookup_order_id" required>
 			</p>
 			<p>
-				<label for="iswcr_lookup_email"><?php esc_html_e( 'Email usata per l ordine', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label for="iswcr_lookup_email"><?php esc_html_e( 'Email usata per l\'ordine', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				<input id="iswcr_lookup_email" type="email" name="lookup_email" required>
 			</p>
-			<p><button type="submit" class="button"><?php esc_html_e( 'Avvia recesso', 'indiesoft-woocommerce-recesso' ); ?></button></p>
+			<p><button type="submit" class="button"><?php esc_html_e( 'Avvia recesso', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></button></p>
 		</form>
 		<?php
 	}
@@ -259,7 +258,7 @@ final class Frontend {
 		?>
 		<p><?php echo wp_kses_post( $policy ); ?></p>
 		<?php if ( Eligibility::deadline_label( $order ) ) : ?>
-			<p><strong><?php esc_html_e( 'Scadenza richiesta', 'indiesoft-woocommerce-recesso' ); ?>:</strong> <?php echo esc_html( Eligibility::deadline_label( $order ) ); ?></p>
+			<p><strong><?php esc_html_e( 'Scadenza richiesta', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?>:</strong> <?php echo esc_html( Eligibility::deadline_label( $order ) ); ?></p>
 		<?php endif; ?>
 		<form method="post" class="iswcr-form">
 			<?php wp_nonce_field( 'iswcr_submit_request', 'iswcr_nonce' ); ?>
@@ -270,7 +269,7 @@ final class Frontend {
 			<?php endif; ?>
 
 			<p>
-				<label for="iswcr_reason"><?php esc_html_e( 'Motivo', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label for="iswcr_reason"><?php esc_html_e( 'Motivo', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				<select id="iswcr_reason" name="reason" required>
 					<?php foreach ( Settings::lines_to_options( Settings::get( 'reasons' ) ) as $reason ) : ?>
 						<option value="<?php echo esc_attr( $reason ); ?>"><?php echo esc_html( $reason ); ?></option>
@@ -279,7 +278,7 @@ final class Frontend {
 			</p>
 
 			<p>
-				<label for="iswcr_refund_method"><?php esc_html_e( 'Metodo preferito', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label for="iswcr_refund_method"><?php esc_html_e( 'Metodo preferito', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				<select id="iswcr_refund_method" name="refund_method" required>
 					<?php foreach ( Settings::lines_to_options( Settings::get( 'refund_methods' ) ) as $method ) : ?>
 						<option value="<?php echo esc_attr( $method ); ?>"><?php echo esc_html( $method ); ?></option>
@@ -288,7 +287,7 @@ final class Frontend {
 			</p>
 
 			<fieldset>
-				<legend><?php esc_html_e( 'Prodotti interessati', 'indiesoft-woocommerce-recesso' ); ?></legend>
+				<legend><?php esc_html_e( 'Prodotti interessati', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></legend>
 				<?php foreach ( $order->get_items() as $item_id => $item ) : ?>
 					<label>
 						<input type="checkbox" name="items[]" value="<?php echo esc_attr( $item_id ); ?>" checked>
@@ -298,17 +297,17 @@ final class Frontend {
 			</fieldset>
 
 			<p>
-				<label for="iswcr_message"><?php esc_html_e( 'Note', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label for="iswcr_message"><?php esc_html_e( 'Note', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				<textarea id="iswcr_message" name="message" rows="5"></textarea>
 			</p>
 
 			<?php if ( 'yes' === Settings::get( 'terms_required' ) ) : ?>
 				<p>
-					<label><input type="checkbox" name="terms" value="1" required> <?php esc_html_e( 'Confermo di aver letto le condizioni di recesso.', 'indiesoft-woocommerce-recesso' ); ?></label>
+					<label><input type="checkbox" name="terms" value="1" required> <?php esc_html_e( 'Confermo di aver letto le condizioni di recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 				</p>
 			<?php endif; ?>
 			<p class="iswcr-confirmation">
-				<label><input type="checkbox" name="confirm_withdrawal" value="1" required> <?php esc_html_e( 'Confermo di voler esercitare il diritto di recesso per il contratto relativo a questo ordine.', 'indiesoft-woocommerce-recesso' ); ?></label>
+				<label><input type="checkbox" name="confirm_withdrawal" value="1" required> <?php esc_html_e( 'Confermo di voler esercitare il diritto di recesso per il contratto relativo a questo ordine.', 'indiesoft-return-withdrawal-requests-woocommerce' ); ?></label>
 			</p>
 
 			<p><button type="submit" class="button"><?php echo esc_html( Settings::get( 'button_label' ) ); ?></button></p>
@@ -322,23 +321,23 @@ final class Frontend {
 		}
 
 		if ( ! isset( $_POST['iswcr_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['iswcr_nonce'] ) ), 'iswcr_submit_request' ) ) {
-			wc_add_notice( __( 'Controllo di sicurezza non valido.', 'indiesoft-woocommerce-recesso' ), 'error' );
+			wc_add_notice( __( 'Controllo di sicurezza non valido.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 			return;
 		}
 
 		$order = wc_get_order( absint( $_POST['order_id'] ?? 0 ) );
 		if ( ! $order || ! $this->current_customer_can_access_order( $order ) || ! Eligibility::is_order_eligible( $order ) || ! $this->order_allows_new_request( $order ) ) {
-			wc_add_notice( __( 'Ordine non valido o non idoneo.', 'indiesoft-woocommerce-recesso' ), 'error' );
+			wc_add_notice( __( 'Ordine non valido o non idoneo.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 			return;
 		}
 
 		if ( 'yes' === Settings::get( 'terms_required' ) && empty( $_POST['terms'] ) ) {
-			wc_add_notice( __( 'Devi accettare le condizioni di recesso.', 'indiesoft-woocommerce-recesso' ), 'error' );
+			wc_add_notice( __( 'Devi accettare le condizioni di recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 			return;
 		}
 
 		if ( empty( $_POST['confirm_withdrawal'] ) ) {
-			wc_add_notice( __( 'Devi confermare la volonta di esercitare il recesso.', 'indiesoft-woocommerce-recesso' ), 'error' );
+			wc_add_notice( __( 'Devi confermare la volontà di esercitare il recesso.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 			return;
 		}
 
@@ -358,7 +357,7 @@ final class Frontend {
 
 		if ( $request_id ) {
 			/* translators: 1: Request id number. */
-			$order->add_order_note( sprintf( __( 'Nuova richiesta di recesso #%d inviata dal cliente.', 'indiesoft-woocommerce-recesso' ), $request_id ) );
+			$order->add_order_note( sprintf( __( 'Nuova richiesta di recesso #%d inviata dal cliente.', 'indiesoft-return-withdrawal-requests-woocommerce' ), $request_id ) );
 			$order->save();
 
 			$request       = Requests_Table::instance()->get( $request_id );
@@ -369,7 +368,7 @@ final class Frontend {
 			exit;
 		}
 
-		wc_add_notice( __( 'Non e stato possibile salvare la richiesta.', 'indiesoft-woocommerce-recesso' ), 'error' );
+		wc_add_notice( __( 'Non è stato possibile salvare la richiesta.', 'indiesoft-return-withdrawal-requests-woocommerce' ), 'error' );
 	}
 
 	private function current_customer_can_access_order( $order ) {
@@ -414,8 +413,8 @@ final class Frontend {
 
 		if ( ! empty( $_GET['iswcr-form'] ) && $this->current_customer_can_access_order( $order ) && Eligibility::is_order_eligible( $order ) && $this->order_allows_new_request( $order ) ) {
 			ob_start();
-			echo '<div class="iswcr-account iswcr-order-received-form">';
-			echo '<h2>' . esc_html__( 'Richiesta di recesso', 'indiesoft-woocommerce-recesso' ) . '</h2>';
+			echo '<div id="iswcr-form" class="iswcr-account iswcr-order-received-form">';
+			echo '<h2>' . esc_html__( 'Richiesta di recesso', 'indiesoft-return-withdrawal-requests-woocommerce' ) . '</h2>';
 			if ( ! empty( $_GET['iswcr-submitted'] ) ) {
 				wc_print_notice( Settings::get( 'success_message' ), 'success' );
 			}
@@ -439,7 +438,7 @@ final class Frontend {
 
 		$this->rendered_order_buttons[ $order_id ] = true;
 
-		$url = $use_current_order_received_url ? $this->get_order_received_form_url( $order ) : $this->get_order_request_url( $order );
+		$url = $use_current_order_received_url ? $this->get_order_received_toggle_url( $order ) : $this->get_order_request_url( $order );
 
 		return '<p class="iswcr-order-button"><a class="button" href="' . esc_url( $url ) . '">' . esc_html( Settings::get( 'button_label' ) ) . '</a></p>';
 	}
@@ -473,6 +472,22 @@ final class Frontend {
 			),
 			$url
 		);
+	}
+
+	/**
+	 * URL for the guest toggle button on the order-received page.
+	 * Points to the same page (not the checkout URL) so the form opens inline.
+	 */
+	private function get_order_received_toggle_url( $order ) {
+		$current_url = home_url( add_query_arg( null, null ) );
+
+		return add_query_arg(
+			array(
+				'iswcr-form' => 1,
+				'key'        => $order->get_order_key(),
+			),
+			$current_url
+		) . '#iswcr-form';
 	}
 
 	private function order_allows_new_request( $order ) {

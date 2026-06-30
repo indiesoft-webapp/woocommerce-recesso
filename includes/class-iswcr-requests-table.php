@@ -2,10 +2,10 @@
 /**
  * Data access for withdrawal requests.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 

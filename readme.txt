@@ -1,4 +1,4 @@
-=== IndieSoft EU Withdrawal for WooCommerce ===
+=== IndieSoft Return and Withdrawal Requests for WooCommerce ===
 Contributors: indiesoft
 Tags: woocommerce, recesso, resi, gdpr, withdrawal
 Requires at least: 6.5
@@ -6,7 +6,7 @@ Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 8.2
 WC tested up to: 10.8
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Configurable module to manage withdrawal and return requests in WooCommerce stor
 
 == Description ==
 
-IndieSoft EU Withdrawal for WooCommerce adds a scalable workflow for the right of withdrawal:
+IndieSoft Return and Withdrawal Requests for WooCommerce adds a scalable workflow for the right of withdrawal:
 
 * Endpoint in "My Account".
 * Explicit button on eligible orders.
@@ -30,7 +30,16 @@ IndieSoft EU Withdrawal for WooCommerce adds a scalable workflow for the right o
 * Email notifications to customers and administrators.
 * Declared compatibility with HPOS.
 
-Available shortcode: [indiesoft_recesso]
+Available shortcode: [indiesoft_rwrw]
+
+== Screenshots ==
+
+1. Backend withdrawal request list.
+2. Backend withdrawal request details.
+3. Plugin settings list.
+4. Withdrawal request button after sending customer order.
+5. Customer withdrawal request view.
+6. Sending customer withdrawal request.
 
 == Installation ==
 
@@ -41,6 +50,9 @@ Available shortcode: [indiesoft_recesso]
 5. Save the permalinks if you change the endpoint slug.
 
 == Changelog ==
+
+= 1.2.0 =
+* Add compatibility with WPML and Polylang
 
 = 1.1.0 =
 * Update email and add guest request

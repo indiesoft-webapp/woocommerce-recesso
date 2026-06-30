@@ -2,10 +2,10 @@
 /**
  * Plugin bootstrap.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,12 +44,12 @@ final class Plugin {
 			Admin::instance()->init();
 		}
 
-		add_filter( 'plugin_action_links_' . ISWCR_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . IRWR_BASENAME, array( $this, 'plugin_action_links' ) );
 	}
 
 	public function woocommerce_missing_notice() {
 		echo '<div class="notice notice-error"><p>';
-		echo esc_html__( 'IndieSoft EU Withdrawal for WooCommerce richiede WooCommerce attivo.', 'indiesoft-woocommerce-recesso' );
+		echo esc_html__( 'IndieSoft Return and Withdrawal Requests for WooCommerce richiede WooCommerce attivo.', 'indiesoft-return-withdrawal-requests-woocommerce' );
 		echo '</p></div>';
 	}
 
@@ -60,7 +60,7 @@ final class Plugin {
 			sprintf(
 				'<a href="%1$s">%2$s</a>',
 				esc_url( $settings_url ),
-				esc_html__( 'Impostazioni', 'indiesoft-woocommerce-recesso' )
+				esc_html__( 'Impostazioni', 'indiesoft-return-withdrawal-requests-woocommerce' )
 			)
 		);
 

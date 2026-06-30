@@ -2,10 +2,10 @@
 /**
  * Lightweight class autoloader.
  *
- * @package IndieSoft\WooCommerceRecesso
+ * @package IndieSoft\ReturnWithdrawalRequest
  */
 
-namespace IndieSoft\WooCommerceRecesso;
+namespace IndieSoft\ReturnWithdrawalRequest;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ final class Autoloader {
 		$relative = strtolower( str_replace( '_', '-', $relative ) );
 		$parts    = explode( '\\', $relative );
 		$file     = 'class-iswcr-' . array_pop( $parts ) . '.php';
-		$path     = ISWCR_PATH . ( $parts ? strtolower( implode( '/', $parts ) ) . '/' : 'includes/' ) . $file;
+		$path     = IRWR_PATH . ( $parts ? strtolower( implode( '/', $parts ) ) . '/' : 'includes/' ) . $file;
 
 		if ( is_readable( $path ) ) {
 			require_once $path;
