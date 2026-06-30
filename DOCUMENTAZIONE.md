@@ -14,7 +14,7 @@
 - Pulsante "Recedere dal contratto qui" sugli ordini idonei.
 - Endpoint configurabile in "Il mio account".
 - Pulsante anche nelle pagine di dettaglio ordine e thank-you.
-- Shortcode `[indiesoft_recesso]` per inserire la funzione in una pagina dedicata.
+- Shortcode `[indiesoft_rwrw]` per inserire la funzione in una pagina dedicata.
 - Supporto ordini guest tramite numero ordine + email, con link firmato tramite order key.
 - Finestra temporale configurabile, default 14 giorni.
 - Stati ordine idonei configurabili.
@@ -29,5 +29,5 @@
 1. Attivare il plugin.
 2. Aprire `Recesso > Impostazioni`.
 3. Verificare endpoint, giorni disponibili, stati idonei e testi.
-4. Creare una pagina visibile nel sito con shortcode `[indiesoft_recesso]` se si vuole un accesso pubblico aggiuntivo oltre alle pagine ordine/account.
+4. Creare una pagina visibile nel sito con shortcode `[indiesoft_rwrw]` se si vuole un accesso pubblico aggiuntivo oltre alle pagine ordine/account.
 5. Salvare i permalink dopo eventuali modifiche all'endpoint.
